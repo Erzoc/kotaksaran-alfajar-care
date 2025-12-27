@@ -1,0 +1,669 @@
+/* Mobile Responsive Styles */
+
+@media (max-width: 768px) {
+    body {
+        padding: 8px;
+        padding-bottom: 60px;
+    }
+
+    /* Header Mobile */
+    .header {
+        padding: 12px 14px;
+        margin-bottom: 12px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .header-content h1 {
+        font-size: 16px;
+        justify-content: center;
+    }
+
+    .subtitle {
+        font-size: 11px;
+    }
+
+    .btn-add {
+        width: 100%;
+        justify-content: center;
+        font-size: 12px;
+        padding: 7px 14px;
+    }
+
+    /* Stats - 2 Cards per Row */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .stat-card {
+        padding: 10px 8px;
+        gap: 8px;
+    }
+
+    .stat-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+
+    .stat-label {
+        font-size: 9px;
+    }
+
+    .stat-value {
+        font-size: 18px;
+    }
+
+    .stat-change {
+        font-size: 8px;
+    }
+
+    /* Action Bar Mobile */
+    .action-bar {
+        padding: 10px 12px;
+    }
+
+    .search-container {
+        margin-bottom: 10px;
+    }
+
+    .search-container input {
+        font-size: 12px;
+    }
+
+    .filters {
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    .filters select {
+        width: 100%;
+        font-size: 11px;
+        padding: 7px 10px;
+        min-width: auto;
+    }
+
+    .action-btns {
+        flex-direction: column;
+        width: 100%;
+        gap: 6px;
+    }
+
+    .btn-secondary {
+        width: 100%;
+        justify-content: center;
+        font-size: 11px;
+        padding: 7px 12px;
+    }
+
+    /* Bulk Actions Mobile */
+    .bulk-actions {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 10px 12px;
+    }
+
+    .bulk-btns {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .bulk-btns .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Hide Table, Show Card List */
+    .desktop-table {
+        display: none;
+    }
+
+    .mobile-list {
+        display: block;
+        padding: 12px;
+    }
+
+    /* Mobile Card Styling */
+    .complaint-card {
+        background: var(--white);
+        padding: 14px;
+        border-radius: 10px;
+        box-shadow: 0 1px 3px var(--shadow-sm);
+        margin-bottom: 10px;
+        border-left: 3px solid var(--primary);
+    }
+
+    .complaint-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .complaint-id {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-light);
+    }
+
+    .complaint-date {
+        font-size: 10px;
+        color: var(--text-light);
+    }
+
+    .complaint-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 6px;
+    }
+
+    .complaint-desc {
+        font-size: 11px;
+        color: var(--text-light);
+        margin-bottom: 10px;
+        line-height: 1.5;
+    }
+
+    .complaint-meta {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+        align-items: center;
+    }
+
+    .complaint-meta .badge {
+        font-size: 9px;
+    }
+
+    .complaint-pic {
+        font-size: 10px;
+        color: var(--text-light);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .complaint-actions {
+        display: flex;
+        gap: 6px;
+        padding-top: 10px;
+        border-top: 1px solid #f0f0f0;
+    }
+
+    .complaint-actions .btn-action {
+        flex: 1;
+        padding: 7px;
+        font-size: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .complaint-checkbox {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+    }
+
+    /* Empty State Mobile */
+    .empty-state {
+        padding: 40px 15px;
+    }
+
+    .empty-state h3 {
+        font-size: 16px;
+    }
+
+    .empty-state p {
+        font-size: 13px;
+    }
+
+    .empty-features li {
+        font-size: 12px;
+    }
+
+    .empty-tip {
+        font-size: 11px;
+        padding: 10px 12px;
+    }
+
+    /* Report Mobile */
+    .report-section {
+        padding: 12px 14px;
+    }
+
+    .report-section h2 {
+        font-size: 14px;
+    }
+
+    .report-content {
+        font-size: 11px;
+        padding-left: 12px;
+    }
+
+    .report-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin: 12px 0;
+    }
+
+    .report-stat-item {
+        padding: 10px;
+    }
+
+    .report-stat-item p {
+        font-size: 9px;
+    }
+
+    .report-stat-item h3 {
+        font-size: 18px;
+    }
+
+    .report-detail h4 {
+        font-size: 12px;
+    }
+
+    .report-detail li {
+        font-size: 11px;
+    }
+
+    /* Footer Mobile */
+    .footer {
+        padding: 15px;
+    }
+
+    .footer-logo {
+        font-size: 24px;
+    }
+
+    .footer-title {
+        font-size: 13px;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    /* Modal Mobile */
+    .modal {
+        padding: 10px;
+    }
+
+    .modal-content {
+        max-width: 100%;
+        margin: 10px;
+    }
+
+    .modal-header {
+        padding: 15px;
+    }
+
+    .modal-header h2 {
+        font-size: 16px;
+    }
+
+    .modal form {
+        padding: 15px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    /* Toast Mobile */
+    .toast {
+        bottom: 15px;
+        right: 15px;
+        left: 15px;
+        font-size: 12px;
+    }
+}
+
+/* Small Phone */
+@media (max-width: 400px) {
+    .stats-grid {
+        gap: 6px;
+    }
+
+    .stat-card {
+        padding: 8px 6px;
+    }
+
+    .stat-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+
+    .stat-value {
+        font-size: 16px;
+    }
+
+    .stat-label {
+        font-size: 8px;
+    }
+
+    .stat-change {
+        font-size: 7px;
+    }
+}
+
+/* Tablet - 2 Cards */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .report-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+/* ========== MODAL FORM MOBILE FIX ========== */
+@media (max-width: 768px) {
+    /* Modal Full Screen di Mobile */
+    .modal {
+        padding: 0;
+        align-items: stretch;
+    }
+
+    .modal-content {
+        max-width: 100%;
+        margin: 0;
+        border-radius: 0;
+        max-height: 100vh;
+        overflow-y: auto;
+    }
+
+    .modal-header {
+        padding: 15px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: var(--primary-light);
+    }
+
+    .modal-header h2 {
+        font-size: 16px;
+    }
+
+    .modal form {
+        padding: 15px;
+    }
+
+    /* Form Groups Proper Spacing */
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-group label {
+        font-size: 12px;
+        margin-bottom: 8px;
+        font-weight: 700;
+        color: var(--text);
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        padding: 12px;
+        font-size: 14px;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        -webkit-appearance: none;
+        appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(45, 134, 89, 0.1);
+    }
+
+    .form-group textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    /* Form Grid di Mobile - 1 Kolom */
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    /* Modal Footer */
+    .modal-footer {
+        padding: 15px;
+        border-top: 1px solid var(--border);
+        margin-top: 20px;
+        position: sticky;
+        bottom: 0;
+        background: white;
+        flex-direction: column-reverse;
+        gap: 10px;
+    }
+
+    .modal-footer .btn {
+        width: 100%;
+        justify-content: center;
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    /* Confirm Dialog Mobile */
+    .confirm-dialog {
+        padding: 20px;
+        margin: 10px;
+    }
+
+    .confirm-dialog h3 {
+        font-size: 18px;
+    }
+
+    .confirm-dialog p {
+        font-size: 13px;
+    }
+}
+/* ============================================
+   MOBILE CARD - Action Buttons dengan Tombol Mata
+   ============================================ */
+.complaint-card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.complaint-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.card-id {
+    font-size: 12px;
+    font-weight: 700;
+    color: #2d8659;
+    font-family: 'Courier New', monospace;
+}
+
+.card-badges {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.card-body {
+    margin-bottom: 12px;
+}
+
+.card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.card-category {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.card-category i {
+    color: #2d8659;
+}
+
+.card-description {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.card-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #888;
+    gap: 8px;
+}
+
+.card-date,
+.card-pic {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.card-date i,
+.card-pic i {
+    color: #2d8659;
+}
+
+/* ============================================
+   CARD FOOTER - Action Buttons
+   ============================================ */
+.card-footer {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.card-footer .btn-icon {
+    flex: 1;
+    min-width: 80px;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Tombol Mata/View - Ungu (PALING JELAS!) */
+.card-footer .btn-view {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.card-footer .btn-view:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* Tombol Edit - Biru */
+.card-footer .btn-edit {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+}
+
+.card-footer .btn-edit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(79, 172, 254, 0.4);
+}
+
+/* Tombol Hapus - Merah */
+.card-footer .btn-delete {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    color: white;
+}
+
+.card-footer .btn-delete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+}
+
+/* Card Lock */
+.card-lock {
+    width: 100%;
+    text-align: center;
+    color: #999;
+    font-size: 12px;
+    padding: 8px;
+    background: #f5f5f5;
+    border-radius: 6px;
+}
+
+/* ============================================
+   RESPONSIVE - Ensure buttons visible on all sizes
+   ============================================ */
+@media (max-width: 480px) {
+    .card-footer .btn-icon {
+        font-size: 12px;
+        padding: 8px 10px;
+        min-width: 70px;
+    }
+}
+
+/* ============================================
+   MOBILE VIEW - Hide Desktop Table
+   ============================================ */
+@media (max-width: 768px) {
+    .desktop-table {
+        display: none;
+    }
+    
+    .mobile-list {
+        display: block;
+    }
+}
+
+@media (min-width: 769px) {
+    .desktop-table {
+        display: block;
+    }
+    
+    .mobile-list {
+        display: none;
+    }
+}

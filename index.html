@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistem Monitoring Keluhan Sarana, Prasarana & Layanan Masjid BKM">
+    <meta name="theme-color" content="#2d8659">
+    <title>Dashboard Keluhan Masjid BKM Al-Fajar</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile.css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <p>Memuat data...</p>
+    </div>
+
+    <div class="container">
+        <!-- Navbar (NEW DESIGN!) -->
+        <nav class="navbar">
+            <div class="navbar-container">
+                <!-- Logo & Brand -->
+                <div class="navbar-brand">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" class="brand-icon">
+                        <path
+                            d="M12 2L2 8v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V8l-10-6zm0 2.18l8 4.8v5.02c0 4.51-2.98 8.69-8 9.99-5.02-1.3-8-5.48-8-9.99V8.98l8-4.8z" />
+                        <circle cx="12" cy="12" r="3" />
+                    </svg>
+                    <div class="brand-text">
+                        <span class="brand-name">Masjid Al-Fajar</span>
+                        <span class="brand-subtitle">Sistem Keluhan BKM</span>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="navbar-actions">
+
+                    <!-- Login Button (shown when NOT logged in) -->
+                    <button id="loginBtn" class="btn btn-login" onclick="Auth.showLoginModal()">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span class="btn-text">Login</span>
+                    </button>
+
+                    <!-- User Profile (shown when logged in) -->
+                    <div id="userProfile" class="user-profile" style="display: none;">
+                        <div class="user-profile-info">
+                            <div class="user-details">
+                                <span class="user-name"></span>
+                                <span class="user-role"></span>
+                            </div>
+                        </div>
+                        <button class="btn btn-logout" onclick="Auth.logout()" title="Logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </nav>
+
+        <!-- Page Header -->
+        <header class="page-header">
+            <div class="page-header-content">
+                <h1>Dashboard Layanan<br>Keluhan Masjid Al-Fajar</h1>
+                <p class="subtitle">Sistem Monitoring Sarana, Prasarana & Layanan BKM</p>
+            </div>
+        </header>
+
+
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon total">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-2 14l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" />
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">Total</div>
+                    <div class="stat-value" id="totalCount">0</div>
+                    <span class="stat-change">Bulan ini</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon urgent">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">Urgent</div>
+                    <div class="stat-value" id="urgentCount">0</div>
+                    <span class="stat-change">Segera</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon process">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">Proses</div>
+                    <div class="stat-value" id="processCount">0</div>
+                    <span class="stat-change">Dikerjakan</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon completed">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">Selesai</div>
+                    <div class="stat-value" id="completedCount">0</div>
+                    <span class="stat-change">Terselesaikan</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search & Filter Bar -->
+        <div class="action-bar">
+            <div class="search-container">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                </svg>
+                <input type="text" id="searchInput" placeholder="Cari keluhan, pelapor, atau kategori..."
+                    onkeyup="App.handleSearch()">
+            </div>
+
+            <div class="filters">
+                <select id="filterStatus" onchange="App.applyFilters()">
+                    <option value="all">Semua Status</option>
+                    <option value="Ditunda">Ditunda</option>
+                    <option value="Proses">Proses</option>
+                    <option value="Selesai">Selesai</option>
+                </select>
+
+                <select id="filterPrioritas" onchange="App.applyFilters()">
+                    <option value="all">Semua Prioritas</option>
+                    <option value="Urgent">🔴 Urgent</option>
+                    <option value="Penting">🟡 Penting</option>
+                    <option value="Rutin">🟢 Rutin</option>
+                </select>
+
+                <select id="filterPeriode" onchange="App.applyFilters()">
+                    <option value="all">Semua Periode</option>
+                    <option value="today">Hari Ini</option>
+                    <option value="week">Minggu Ini</option>
+                    <option value="month">Bulan Ini</option>
+                    <option value="custom">Custom Range</option>
+                </select>
+            </div>
+
+            <div class="action-btns">
+    <!-- Tombol Tambah Keluhan (hanya untuk logged in users) -->
+    <button id="btnTambahKeluhan" class="btn btn-secondary" onclick="UI.openModal('addModal')" style="display: none;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+        </svg>
+        Tambah Keluhan
+    </button>
+
+    <!-- Tombol Review Keluhan (untuk semua user, termasuk public) -->
+    <button id="btnReviewInfo" class="btn btn-secondary" onclick="UI.showToast('ℹ️ Klik tombol MATA (👁️) di kolom Aksi untuk lihat detail keluhan', 'info', 5000)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+        </svg>
+        Review Keluhan
+    </button>
+
+    <!-- Tombol Refresh -->
+    <button class="btn btn-secondary" onclick="App.refreshData()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+        </svg>
+        Refresh
+    </button>
+
+    <!-- Tombol Export PDF (hanya untuk logged in users) -->
+    <button id="btnExportPDF" class="btn btn-secondary" onclick="App.exportToPDF()" style="display: none;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z"/>
+        </svg>
+        Export PDF
+    </button>
+</div>
+
+
+
+        </div>
+        <!-- Bulk Actions (when items selected) -->
+        <div id="bulkActions" class="bulk-actions" style="display: none;">
+            <div class="bulk-info">
+                <span id="selectedCount">0</span> keluhan terpilih
+            </div>
+            <div class="bulk-btns">
+                <button class="btn btn-secondary" onclick="App.bulkUpdateStatus()">
+                    <i class="fas fa-edit"></i> Update Status
+                </button>
+                <button class="btn btn-danger" onclick="App.bulkDelete()">
+                    <i class="fas fa-trash"></i> Hapus Terpilih
+                </button>
+                <button class="btn btn-secondary" onclick="App.clearSelection()">
+                    <i class="fas fa-times"></i> Batal
+                </button>
+            </div>
+        </div>
+
+        <!-- Data Container -->
+<div class="data-container">
+    <!-- Desktop Table -->
+    <div class="desktop-table">
+        <table class="data-table" id="complaintsTable">
+            <thead>
+                <tr>
+                    <th id="checkboxHeader"></th>
+                    <th>No</th>
+                    <th>Tanggal</th>
+                    <th>Pelapor</th>
+                    <th>Kategori</th>
+                    <th>Prioritas</th>
+                    <th>Uraian</th>
+                    <th>Status</th>
+                    <th>PIC</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Data will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Mobile Card List (PENTING!) -->
+    <div class="mobile-list" id="mobileList">
+        <!-- Cards will be loaded here -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="empty-state" style="display: none;">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="currentColor" style="color: #ddd">
+            <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM12 7c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1.4c0-2 4-3.1 6-3.1s6 1.1 6 3.1V19z"/>
+        </svg>
+        <h3>Belum Ada Keluhan Tercatat</h3>
+        <p>Mulai tambahkan keluhan pertama untuk:</p>
+        <ul class="empty-features">
+            <li><i class="fas fa-check"></i> Monitoring sarana masjid real-time</li>
+            <li><i class="fas fa-check"></i> Tracking progress penanganan</li>
+            <li><i class="fas fa-check"></i> Laporan bulanan otomatis</li>
+        </ul>
+        <button class="btn btn-primary" onclick="Auth.isLoggedIn() ? UI.openModal('addModal') : Auth.showLoginModal()">
+            <i class="fas fa-plus"></i> Tambah Keluhan Pertama
+        </button>
+        <div class="empty-tip">
+            <strong>💡 Tips:</strong> Keluhan dapat diisi oleh PIC setiap Senin pagi setelah pengecekan rutin
+        </div>
+    </div>
+</div>
+
+
+        <!-- Monthly Report -->
+        <div class="report-section">
+            <h2>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+                </svg>
+                Laporan Bulan Ini (<span id="currentMonth">Desember 2025</span>)
+            </h2>
+            <div id="monthlyReport" class="report-content">
+                <!-- Report will be generated here -->
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2L2 8v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V8l-10-6zm0 2.18l8 4.8v5.02c0 4.51-2.98 8.69-8 9.99-5.02-1.3-8-5.48-8-9.99V8.98l8-4.8z" />
+                        <circle cx="12" cy="12" r="3" fill="currentColor" />
+                    </svg>
+                </div>
+                <h3 class="footer-title">Masjid Al-Fajar</h3>
+                <p class="footer-subtitle">Badan Kemakmuran Masjid (BKM)</p>
+                <div class="footer-divider"></div>
+                <p class="footer-info">© 2025 Sistem Keluhan Masjid</p>
+                <div class="footer-links">
+                    <a href="#about">Tentang</a>
+                    <a href="#guide">Panduan</a>
+                    <a href="#contact">Kontak</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- MODAL: Tambah Keluhan Baru -->
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="UI.closeModal('addModal')">&times;</span>
+            <h2><i class="fas fa-plus-circle"></i> Tambah Keluhan Baru</h2>
+
+            <form id="addForm" onsubmit="App.addComplaint(event)">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="nama">Nama Pelapor *</label>
+                        <input type="text" id="nama" name="nama" required placeholder="Nama jamaah/pelapor">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="kategori">Kategori *</label>
+                        <select id="kategori" name="kategori" required>
+                            <option value="">-- Pilih Kategori --</option>
+                            <option value="Layanan">Layanan</option>
+                            <option value="Sarana">Sarana</option>
+                            <option value="Prasarana">Prasarana</option>
+                            <option value="Elektronik">Elektronik</option>
+                            <option value="Kebersihan">Kebersihan</option>
+                            <option value="Estetika">Estetika</option>
+                            <option value="Keamanan">Keamanan</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prioritas">Prioritas *</label>
+                        <select id="prioritas" name="prioritas" required>
+                            <option value="">-- Pilih Prioritas --</option>
+                            <option value="High">🔴 Urgent (Segera)</option>
+                            <option value="Medium">🟡 Penting (Minggu Ini)</option>
+                            <option value="Low">🟢 Rutin (Normal)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="biaya">Estimasi Biaya (Rp)</label>
+                        <input type="number" id="biaya" name="biaya" placeholder="0">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="uraian">Uraian Keluhan *</label>
+                    <textarea id="uraian" name="uraian" rows="4" required
+                        placeholder="Jelaskan keluhan secara detail..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="solusi">Solusi/Tindakan</label>
+                    <textarea id="solusi" name="solusi" rows="3"
+                        placeholder="Rencana solusi atau tindakan yang akan dilakukan"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="penanggungjawab">Penanggungjawab (PIC)</label>
+                    <input type="text" id="penanggungjawab" name="penanggungjawab" readonly
+                        placeholder="Auto-fill dari user login" style="background: #f0f9f4; cursor: not-allowed;">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Keluhan
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="UI.closeModal('addModal')">
+                        <i class="fas fa-times"></i> Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-edit"></i> Edit Keluhan</h2>
+                <button class="close" onclick="UI.closeModal('editModal')">&times;</button>
+            </div>
+
+            <form id="editForm" onsubmit="App.updateComplaint(event)">
+                <input type="hidden" id="editId">
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Nama Pelapor *</label>
+                        <input type="text" id="editNama" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kategori *</label>
+                        <select id="editKategori" required>
+                            <option value="Layanan">Layanan</option>
+                            <option value="Sarana">Sarana</option>
+                            <option value="Prasarana">Prasarana</option>
+                            <option value="Elektronik">Elektronik</option>
+                            <option value="Kebersihan">Kebersihan</option>
+                            <option value="Estetika">Estetika</option>
+                            <option value="Keamanan">Keamanan</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status *</label>
+                        <select id="editStatus" required>
+                            <option value="Ditunda">Ditunda</option>
+                            <option value="Proses">Proses</option>
+                            <option value="Selesai">Selesai</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Prioritas *</label>
+                        <select id="editPrioritas" required>
+                            <option value="High">🔴 Urgent (Segera)</option>
+                            <option value="Medium">🟡 Penting (Minggu Ini)</option>
+                            <option value="Low">🟢 Rutin (Normal)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Uraian Keluhan *</label>
+                    <textarea id="editUraian" required rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Solusi/Tindakan</label>
+                    <textarea id="editSolusi" rows="2"></textarea>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Estimasi Biaya (Rp)</label>
+                        <input type="number" id="editBiaya">
+                    </div>
+
+                    <!-- UPDATED: PIC field - disabled untuk PIC, editable untuk Admin -->
+                    <div class="form-group">
+                        <label>Penanggungjawab (PIC)</label>
+                        <input type="text" id="editPenanggungjawab" readonly
+                            style="background: #f5f5f5; cursor: not-allowed;">
+                        <small class="form-hint"><i class="fas fa-info-circle"></i> PIC tidak dapat diubah</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tanggal Selesai</label>
+                        <input type="date" id="editTanggalSelesai">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Update Keluhan
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="UI.closeModal('editModal')">
+                        <i class="fas fa-times"></i> Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Confirmation Dialog -->
+    <div id="confirmDialog" class="modal">
+        <div class="modal-content confirm-dialog">
+            <div class="confirm-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 id="confirmTitle">Konfirmasi</h3>
+            <p id="confirmMessage">Apakah Anda yakin?</p>
+            <div class="modal-footer">
+                <button id="confirmBtn" class="btn btn-danger">
+                    <i class="fas fa-check"></i> Ya, Lanjutkan
+                </button>
+                <button class="btn btn-secondary" onclick="UI.closeConfirm()">
+                    <i class="fas fa-times"></i> Batal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Login Modal (NEW!) -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content login-modal">
+            <span class="modal-close" onclick="Auth.hideLoginModal()">&times;</span>
+
+            <div class="login-header">
+                <div class="login-icon">🕌</div>
+                <h2>Login Admin & PIC</h2>
+                <p>Sistem Keluhan Masjid Al-Fajar</p>
+            </div>
+
+            <div class="login-body">
+                <!-- Form Login Supabase -->
+                <form id="loginForm" onsubmit="Auth.handleLogin(event)">
+                    <div class="form-group" style="margin-bottom: 15px; text-align: left;">
+                        <label style="display: block; margin-bottom: 5px; font-size: 14px; font-weight: 600;">Email
+                            Admin</label>
+                        <input type="email" id="loginEmail" placeholder="admin@masjid.com" required
+                            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px; text-align: left;">
+                        <label
+                            style="display: block; margin-bottom: 5px; font-size: 14px; font-weight: 600;">Password</label>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required
+                            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block" style="padding: 12px;">
+                        <i class="fas fa-sign-in-alt"></i> Masuk Sekarang
+                    </button>
+                </form>
+
+                <div class="login-divider"><span>atau</span></div>
+
+                <button onclick="Auth.hideLoginModal()" class="btn btn-secondary btn-block">
+                    <i class="fas fa-eye"></i> Lihat Laporan (Tanpa Login)
+                </button>
+            </div>
+
+
+            <div class="login-info">
+                <div class="info-box">
+                    <strong><i class="fas fa-info-circle"></i> Informasi:</strong>
+                    <ul>
+                        <li>Jamaah dapat melihat keluhan tanpa login</li>
+                        <li>Login hanya untuk Admin & PIC</li>
+                        <li>Gunakan email yang terdaftar</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="login-footer">
+                <p>Butuh bantuan?</p>
+                <p>
+                    <i class="fab fa-whatsapp"></i> WhatsApp: <a href="https://wa.me/6289504440411">+62
+                        895-0444-0411</a><br>
+                    <i class="fas fa-envelope"></i> Email: <a
+                        href="mailto:masjidalfajar.kedaidurian@gmail.com">masjidalfajar.kedaidurian@gmail.com</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script> <!-- NEW! Auth harus setelah config -->
+    <script src="js/utils.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- jsPDF Library for PDF Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+</body>
+
+</html>
